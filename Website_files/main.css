@@ -184,6 +184,11 @@ ul.posts p {
   /*text-align: left;*/
 }
 
+
+.section {
+  page-break-inside: avoid;
+}
+
 /*#site .meta {
   color: #aaa;
 }*/
