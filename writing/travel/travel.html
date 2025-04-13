@@ -3,254 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rick Rejeleene's Travel Blog</title>
+    <title>Rick Rejeleene's Travel Journal</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Base styling */
+        :root {
+            --primary-blue: #2196F3;
+            --text-dark: #2c3e50;
+            --bg-light: #f8f9fa;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
         }
-        
-        header {
-            margin-bottom: 30px;
-        }
-        
-        .site-title {
-            color: #2196F3;
-            margin-bottom: 5px;
-        }
-        
-        /* Navigation */
-        nav {
-            margin-bottom: 25px;
-        }
-        
-        nav ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            gap: 20px;
-        }
-        
-        nav li a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        
-        nav li a:hover {
-            color: #2196F3;
-        }
-        
-        nav li a.active {
-            color: #2196F3;
+
+        .navbar-brand {
             font-weight: 600;
+            color: var(--primary-blue) !important;
         }
-        
-        /* Pagination styling */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin: 40px 0;
-            user-select: none;
-        }
-        
-        .pagination-item {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 40px;
-            height: 40px;
-            margin: 0 5px;
-            border-radius: 4px;
-            background-color: #f5f5f5;
-            color: #333;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-        
-        .pagination-item:hover {
-            background-color: #e0e0e0;
-        }
-        
-        .pagination-item.active {
-            background-color: #2196F3;
-            color: white;
-        }
-        
-        .pagination-item.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-        
-        /* Travel entries styling */
+
         .travel-entry {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .travel-entry img {
-            max-width: 100%;
-            height: auto;
+            background: white;
             border-radius: 8px;
-            margin: 10px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-        
+
         .travel-date {
-            font-weight: 600;
-            color: #2196F3;
+            color: var(--primary-blue);
+            font-weight: 500;
+            font-size: 0.9rem;
         }
-        
+
         .travel-location {
-            font-size: 1.4em;
+            color: var(--text-dark);
             font-weight: 700;
-            margin: 5px 0;
+            margin: 0.5rem 0;
         }
-        
-        /* Controls for entries per page and filter */
-        .entries-control {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .entries-control select {
-            margin-left: 10px;
-            padding: 5px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-        
-        .filter-control {
-            display: flex;
-            align-items: center;
-        }
-        
-        .filter-control input {
-            padding: 8px 12px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            margin-left: 10px;
-            width: 250px;
-        }
-        
-        .region-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-            gap: 8px;
-        }
-        
+
         .region-tab {
-            padding: 8px 16px;
-            background-color: #f5f5f5;
-            color: #333;
-            border-radius: 20px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 14px;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.2s;
         }
-        
-        .region-tab:hover {
-            background-color: #e0e0e0;
-        }
-        
+
         .region-tab.active {
-            background-color: #2196F3;
+            background: var(--primary-blue);
             color: white;
         }
-        
-        /* Responsive adjustments */
+
+        .pagination-item {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+
+        .pagination-item.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
         @media (max-width: 768px) {
-            .entries-control {
+            .filter-controls {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-            
-            .entries-control select,
-            .filter-control input {
-                margin-left: 0;
-            }
-            
-            .filter-control {
-                width: 100%;
-            }
-            
-            .filter-control input {
-                flex-grow: 1;
-            }
-            
-            nav ul {
-                flex-direction: column;
-                gap: 5px;
+                gap: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1 class="site-title">Rick Rejeleene</h1>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Poetry</a></li>
-                <li><a href="#">Resume</a></li>
-                <li><a href="#">Writing</a></li>
-                <li><a href="#" class="active">Travel Journal</a></li>
-            </ul>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">Rick Rejeleene</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Poetry</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Resume</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" id="writingDropdown" role="button" data-bs-toggle="dropdown">
+                            Writing
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item active" href="#">Travel Journal</a></li>
+                            <li><a class="dropdown-item" href="#">Reading</a></li>
+                            <li><a class="dropdown-item" href="#">Research</a></li>
+                            <li><a class="dropdown-item" href="#">Essays</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <header class="mb-5">
+            <h1 class="display-4 mb-3">Travel Journal</h1>
+            <p class="lead">Chronicling my journeys around the world</p>
+        </header>
+
+        <!-- Controls -->
+        <div class="filter-controls mb-4">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <div class="region-tab active" data-region="all">All</div>
+                <div class="region-tab" data-region="india">India</div>
+                <div class="region-tab" data-region="usa">USA</div>
+                <div class="region-tab" data-region="asia">Asia & Pacific</div>
+                <div class="region-tab" data-region="middleeast">Middle East</div>
+            </div>
+            
+            <div class="d-flex gap-3 flex-wrap">
+                <div class="d-flex align-items-center gap-2">
+                    <label>Show:</label>
+                    <select class="form-select" id="entriesPerPage" style="width: 100px">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+                <div class="flex-grow-1">
+                    <input type="search" class="form-control" id="searchFilter" placeholder="Search locations or keywords...">
+                </div>
+            </div>
+        </div>
+
+        <!-- Entries Container -->
+        <div id="travelEntries"></div>
+
+        <!-- Pagination -->
+        <nav class="d-flex justify-content-center mt-5">
+            <div class="pagination" id="pagination"></div>
         </nav>
-    </header>
-    
-    <h2>Welcome to my Travel micro-blog</h2>
-    <p>Keep it short and simple.</p>
-    <p>I write summaries of my impressions on places. I'm blessed with opportunities to travel and desire to share glimpses of my experiences with you.</p>
-    
-    <div class="region-tabs" id="regionTabs">
-        <div class="region-tab active" data-region="all">All Regions</div>
-        <div class="region-tab" data-region="india">India</div>
-        <div class="region-tab" data-region="usa">United States</div>
-        <div class="region-tab" data-region="asia">Asia & Pacific</div>
-        <div class="region-tab" data-region="middleeast">Middle East</div>
-    </div>
-    
-    <div class="entries-control">
-        <div class="entries-per-page">
-            <label for="entriesPerPage">Entries per page:</label>
-            <select id="entriesPerPage">
-                <option value="5">5</option>
-                <option value="10" selected>10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-            </select>
-        </div>
-        
-        <div class="filter-control">
-            <label for="searchFilter">Search:</label>
-            <input type="text" id="searchFilter" placeholder="Type to search locations or keywords...">
-        </div>
-    </div>
-    
-    <div id="travelEntries">
-        <!-- Travel entries will be loaded by JavaScript -->
-    </div>
-    
-    <div class="pagination" id="pagination">
-        <!-- Pagination will be generated by JavaScript -->
-    </div>
-    
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Sample travel entries
+        // Complete Travel Entries Array
         const travelEntries = [
             {
                 date: "August 15, 2022",
@@ -371,6 +273,76 @@
                 imageUrl: "/api/placeholder/400/300",
                 region: "usa"
             },
+
+            
+            
+            {
+    date: "April 25, 2017",
+    location: "Asheville & Charlotte, North Carolina",
+    content: `I visited North Carolina - Asheville and Charlotte. Asheville is about an hour drive from Charlotte. 
+    
+    Despite it being April, the weather was unpredictable - transitioning quickly from sunlight to heavy rain. 
+    
+    Notable observations:
+    - Billy Graham's Library appears to be a popular local attraction
+    - Charlotte Airport was undergoing significant expansion
+    - 15-hour travel duration from Providence emphasizes the importance of rest during long journeys`,
+    image: "/img/travel/north-carolina.jpg",
+    region: "usa"
+},
+{
+    date: "March 21, 2017",
+    location: "Westerly, Rhode Island (Connecticut Border)",
+    content: `Visited this classic New England town notable for:
+    
+    - Colonial-era architecture predominant in building designs
+    - Unique floor numbering system (ground floor = first floor in US)
+    - Historical heating challenges revealing why:
+      * Proper insulation is crucial for New England homes
+      * Early settlers faced extreme winter hardships
+      * Modern heating systems became essential for survival`,
+    image: null, // Add image path if available
+    region: "usa"
+},
+
+    {
+        date: "February 25, 2017",
+        location: "New Hampshire",
+        content: `Revisited after three years with key observations:
+        
+        - Popular ski destination for New Englanders
+        - Challenging driving conditions due to thick fog
+        - Dramatic weather contrast: 80°F departure vs 20°F arrival
+        - State motto insight: "Live free or die" reflects local values`,
+        image: "/img/travel/new-hampshire.jpg",
+        region: "usa"
+    },
+    {
+        date: "February 21, 2017",
+        location: "Florida → Rhode Island",
+        content: `Notable climate contrast experience:
+        
+        - Departed Orlando at 80°F summer-like weather
+        - Arrived in Providence to 20°F winter conditions
+        - Cultural observation: Florida's Spanish architectural influence
+        - Social highlight: Group photo with local contacts`,
+        image: "/img/travel/florida-group.jpg",
+        region: "usa"
+    },
+    {
+        date: "February 7, 2017",
+        location: "Florida (Upcoming Trip)",
+        content: `Cultural reflections on migration patterns:
+        
+        - New Englanders' winter migration to warmer climates
+        - Cultural assimilation process observations:
+          * Typically takes 1-2 generations
+          * Creates unique subcultures within US society
+        - Architectural note: Spanish colonial influences
+        - Advice for immigrants: Embrace cultural exchange`,
+        image: null,
+        region: "usa"
+    },
             {
                 date: "2015",
                 location: "Madurai, Tamil Nadu",
@@ -458,11 +430,10 @@
             {
                 date: "Unknown",
                 location: "New York City",
-                content: "Most diverse city on Planet. There's plenty of things to do in NYC. People are from every country on the planet. NYC never sleeps. I was awake and could see lights. You can find all ethnic food. From from any country on the planet. I visited Randall's Park in NYC. I attended a friend's wedding in Central Park.",
+                content: "Most diverse city on Planet. There's plenty of things to do in NYC.People are from every country on the planet. NYC never sleeps. I was awake and could see lights. You can find all ethnic food. From from any country on the planet. I visited Randall's Park in NYC. I attended a friend's wedding in Central Park.",
                 imageUrl: null,
                 region: "usa"
-            },
-            {
+            },   {
                 date: "Unknown",
                 location: "Orlando & Daytona, Florida",
                 content: "Florida –– to a northerner (U.S), the buildings look different. The Vegetation, plants, weather is tropical. Sunny weather, and lot of South American food.",
@@ -491,209 +462,103 @@
                 region: "usa"
             }
         ];
-        
-        // Variables for pagination and filtering
+
+        // Journal Functionality
         let currentPage = 1;
         let entriesPerPage = 10;
-        let currentRegion = "all";
-        let searchQuery = "";
-        
-        // Function to filter entries based on region and search query
-        function filterEntries() {
-            return travelEntries.filter(entry => {
-                // Filter by region
-                const regionMatch = currentRegion === "all" || entry.region === currentRegion;
-                
-                // Filter by search query
-                const searchMatch = searchQuery === "" || 
-                    entry.location.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                    entry.content.toLowerCase().includes(searchQuery.toLowerCase());
-                
-                return regionMatch && searchMatch;
-            });
-        }
-        
-        // Function to display travel entries for the current page
-        function displayEntries() {
-            const filteredEntries = filterEntries();
-            const entriesContainer = document.getElementById('travelEntries');
-            entriesContainer.innerHTML = '';
-            
-            if (filteredEntries.length === 0) {
-                entriesContainer.innerHTML = '<div class="travel-entry"><p>No travel entries match your search criteria. Try a different search or filter.</p></div>';
-                return;
+        let activeRegion = 'all';
+        let searchTerm = '';
+
+        function renderEntries() {
+            try {
+                const filtered = travelEntries.filter(entry => {
+                    const matchesRegion = activeRegion === 'all' || entry.region === activeRegion;
+                    const matchesSearch = entry.location.toLowerCase().includes(searchTerm) ||
+                                        entry.content.toLowerCase().includes(searchTerm);
+                    return matchesRegion && matchesSearch;
+                });
+
+                const start = (currentPage - 1) * entriesPerPage;
+                const paginated = filtered.slice(start, start + entriesPerPage);
+
+                const entriesHTML = paginated.map(entry => `
+                    <article class="travel-entry">
+                        <header>
+                            <div class="travel-date">${entry.date}</div>
+                            <h2 class="h4">${entry.location}</h2>
+                        </header>
+                        <p>${entry.content}</p>
+                        ${entry.imageUrl || entry.image ? `<img src="${entry.imageUrl || entry.image}" class="entry-image" alt="${entry.location}">` : ''}
+                    </article>
+                `).join('');
+
+                document.getElementById('travelEntries').innerHTML = entriesHTML;
+                renderPagination(filtered.length);
+            } catch (error) {
+                console.error('Error rendering entries:', error);
+                document.getElementById('travelEntries').innerHTML = '<div class="alert alert-danger">Error loading entries. Please try again.</div>';
             }
+        }
+
+        function renderPagination(totalItems) {
+            const pageCount = Math.ceil(totalItems / entriesPerPage);
+            let paginationHTML = '<ul class="pagination">';
             
-            const startIndex = (currentPage - 1) * entriesPerPage;
-            const endIndex = Math.min(startIndex + entriesPerPage, filteredEntries.length);
-            
-            for (let i = startIndex; i < endIndex; i++) {
-                const entry = filteredEntries[i];
-                const entryElement = document.createElement('div');
-                entryElement.className = 'travel-entry';
-                
-                let entryHTML = `
-                    <div class="travel-date">${entry.date}</div>
-                    <div class="travel-location">${entry.location}</div>
-                    <p>${entry.content}</p>
+            if(pageCount > 1) {
+                paginationHTML += `
+                    <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                        <button class="page-link" onclick="currentPage--; renderEntries()">Previous</button>
+                    </li>
                 `;
-                
-                if (entry.imageUrl) {
-                    entryHTML += `<img src="${entry.imageUrl}" alt="Photo from ${entry.location}" />`;
+
+                for(let i = 1; i <= pageCount; i++) {
+                    paginationHTML += `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <button class="page-link" onclick="currentPage = ${i}; renderEntries()">${i}</button>
+                        </li>
+                    `;
                 }
-                
-                entryElement.innerHTML = entryHTML;
-                entriesContainer.appendChild(entryElement);
+
+                paginationHTML += `
+                    <li class="page-item ${currentPage === pageCount ? 'disabled' : ''}">
+                        <button class="page-link" onclick="currentPage++; renderEntries()">Next</button>
+                    </li>
+                `;
             }
+            
+            paginationHTML += '</ul>';
+            document.getElementById('pagination').innerHTML = paginationHTML;
         }
-        
-        // Function to generate pagination
-        function generatePagination() {
-            const filteredEntries = filterEntries();
-            const totalPages = Math.ceil(filteredEntries.length / entriesPerPage);
-            const paginationContainer = document.getElementById('pagination');
-            paginationContainer.innerHTML = '';
-            
-            if (totalPages <= 1) {
-                return;
-            }
-            
-            // Previous button
-            const prevBtn = document.createElement('a');
-            prevBtn.href = '#';
-            prevBtn.className = `pagination-item ${currentPage === 1 ? 'disabled' : ''}`;
-            prevBtn.textContent = '«';
-            prevBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (currentPage > 1) {
-                    currentPage--;
-                    updatePage();
-                }
-            });
-            paginationContainer.appendChild(prevBtn);
-            
-            // Page numbers
-            const maxVisiblePages = 5;
-            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-            
-            if (endPage - startPage + 1 < maxVisiblePages) {
-                startPage = Math.max(1, endPage - maxVisiblePages + 1);
-            }
-            
-            // First page
-            if (startPage > 1) {
-                const firstPageBtn = document.createElement('a');
-                firstPageBtn.href = '#';
-                firstPageBtn.className = 'pagination-item';
-                firstPageBtn.textContent = '1';
-                firstPageBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    currentPage = 1;
-                    updatePage();
-                });
-                paginationContainer.appendChild(firstPageBtn);
-                
-                if (startPage > 2) {
-                    const ellipsis = document.createElement('span');
-                    ellipsis.className = 'pagination-item disabled';
-                    ellipsis.textContent = '…';
-                    paginationContainer.appendChild(ellipsis);
-                }
-            }
-            
-            // Page buttons
-            for (let i = startPage; i <= endPage; i++) {
-                const pageBtn = document.createElement('a');
-                pageBtn.href = '#';
-                pageBtn.className = `pagination-item ${i === currentPage ? 'active' : ''}`;
-                pageBtn.textContent = i;
-                pageBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    currentPage = i;
-                    updatePage();
-                });
-                paginationContainer.appendChild(pageBtn);
-            }
-            
-            // Last page
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) {
-                    const ellipsis = document.createElement('span');
-                    ellipsis.className = 'pagination-item disabled';
-                    ellipsis.textContent = '…';
-                    paginationContainer.appendChild(ellipsis);
-                }
-                
-                const lastPageBtn = document.createElement('a');
-                lastPageBtn.href = '#';
-                lastPageBtn.className = 'pagination-item';
-                lastPageBtn.textContent = totalPages;
-                lastPageBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    currentPage = totalPages;
-                    updatePage();
-                });
-                paginationContainer.appendChild(lastPageBtn);
-            }
-            
-            // Next button
-            const nextBtn = document.createElement('a');
-            nextBtn.href = '#';
-            nextBtn.className = `pagination-item ${currentPage === totalPages ? 'disabled' : ''}`;
-            nextBtn.textContent = '»';
-            nextBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    updatePage();
-                }
-            });
-            paginationContainer.appendChild(nextBtn);
-        }
-        
-        // Function to update the page
-        function updatePage() {
-            displayEntries();
-            generatePagination();
-            window.scrollTo(0, 0);
-        }
-        
-        // Initialize the page
+
+        // Event Listeners
         document.addEventListener('DOMContentLoaded', () => {
-            // Set up entries per page selector
-            const entriesSelector = document.getElementById('entriesPerPage');
-            entriesSelector.addEventListener('change', () => {
-                entriesPerPage = parseInt(entriesSelector.value);
-                currentPage = 1;
-                updatePage();
-            });
-            
-            // Set up search filter
-            const searchFilter = document.getElementById('searchFilter');
-            searchFilter.addEventListener('input', () => {
-                searchQuery = searchFilter.value;
-                currentPage = 1;
-                updatePage();
-            });
-            
-            // Set up region tabs
-            const regionTabs = document.querySelectorAll('.region-tab');
-            regionTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Remove active class from all tabs
-                    regionTabs.forEach(t => t.classList.remove('active'));
-                    // Add active class to clicked tab
-                    tab.classList.add('active');
-                    // Update current region
-                    currentRegion = tab.dataset.region;
+            // Region filter
+            document.querySelectorAll('.region-tab').forEach(filter => {
+                filter.addEventListener('click', () => {
+                    document.querySelectorAll('.region-tab').forEach(f => f.classList.remove('active'));
+                    filter.classList.add('active');
+                    activeRegion = filter.dataset.region;
                     currentPage = 1;
-                    updatePage();
+                    renderEntries();
                 });
             });
-            
-            // Initial display
-            updatePage();
+
+            // Search filter
+            document.getElementById('searchFilter').addEventListener('input', (e) => {
+                searchTerm = e.target.value.toLowerCase();
+                currentPage = 1;
+                renderEntries();
+            });
+
+            // Entries per page
+            document.getElementById('entriesPerPage').addEventListener('change', (e) => {
+                entriesPerPage = parseInt(e.target.value);
+                currentPage = 1;
+                renderEntries();
+            });
+
+            // Initial render
+            renderEntries();
         });
     </script>
 </body>
