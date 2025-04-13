@@ -1,235 +1,644 @@
 <!DOCTYPE html>
-<!-- saved from url=(0040)http://rickrejeleene.com/writing/travel/ -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Travel Blog - Rick Rejeleene</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <!-- Bootstrap -->
-        <link href="../../Website_files/bootstrap.min.css" rel="stylesheet">
-
-        <!-- syntax highlighting CSS -->
-        <link rel="stylesheet" href="../../Website_files/syntax.css">
-
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="../../Website_files/main.css">
-
-		<!-- Font CSS -->
-		<link href="../../Website_files/css" rel="stylesheet" type="text/css">
-
-    <style>@media print {#ghostery-purple-box {display:none !important}}</style><link rel="stylesheet" type="text/css" href="chrome-extension://pkehgijcmpdhfbdbbnkijodmdjhbjlgp/skin/socialwidgets.css">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Blog with Pagination</title>
     <style>
+        /* Base styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Pagination styling */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+            user-select: none;
+        }
+        
+        .pagination-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            margin: 0 5px;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .pagination-item:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .pagination-item.active {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .pagination-item.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        /* Travel entries styling */
         .travel-entry {
             margin-bottom: 30px;
-            padding: 20px;
+            padding-bottom: 20px;
             border-bottom: 1px solid #eee;
         }
         
+        .travel-entry img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
         .travel-date {
-            color: #666;
-            font-size: 0.9em;
+            font-weight: 600;
+            color: #2196F3;
         }
         
         .travel-location {
             font-size: 1.4em;
-            font-weight: bold;
-            margin: 10px 0;
+            font-weight: 700;
+            margin: 5px 0;
         }
         
-        .travel-content {
-            margin: 15px 0;
+        /* Controls for entries per page and filter */
+        .entries-control {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            align-items: center;
+            flex-wrap: wrap;
         }
         
-        .travel-image {
-            max-width: 100%;
-            height: auto;
-            margin: 15px 0;
-        }
-        
-        .pagination-block {
-            text-align: center;
-            margin: 30px 0;
-        }
-        
-        .pagination-block .control {
-            padding: 8px 16px;
-            margin: 0 4px;
-            border: 1px solid #ddd;
+        .entries-control select {
+            margin-left: 10px;
+            padding: 5px;
             border-radius: 4px;
-            display: inline-block;
-            text-decoration: none;
         }
         
-        .pagination-block .current {
-            background-color: #007bff;
+        .filter-control {
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-control input {
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-left: 10px;
+            width: 200px;
+        }
+        
+        .region-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            gap: 8px;
+        }
+        
+        .region-tab {
+            padding: 8px 16px;
+            background-color: #f5f5f5;
+            color: #333;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        
+        .region-tab:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .region-tab.active {
+            background-color: #2196F3;
             color: white;
         }
         
-        .region-filter {
-            margin: 20px 0;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 5px;
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .entries-control {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .entries-control select,
+            .filter-control input {
+                margin-left: 0;
+            }
+            
+            .filter-control {
+                width: 100%;
+            }
+            
+            .filter-control input {
+                flex-grow: 1;
+            }
         }
-    </style></head>
-    <body class="writing articles">
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="../../Website_files/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="../../Website_files/bootstrap.min.js"></script>
-        <script src="https://pagination.js.org/dist/2.1.4/pagination.js"></script>
-        <div id="container">
-          <div id="site">
-              <div id="header">
-            <nav class="navbar navbar-default">
-              <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                  </button>
-                  <a class="navbar-brand" href="http://rickrejeleene.me/">Rick Rejeleene</a>
-                </div>
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                  <ul class="nav navbar-nav navbar-right">
-                    <li><a class="extra" href="http://rickrejeleene.me">Home</a></li>
-
-                    <li><a class="extra" href="http://rickrejeleene.me/poetry/index.html">Poetry</a></li>
-                    <li><a class="extra" href="http://rickrejeleene.me/resume/index.html">Resume</a></li>
-                    <li class="dropdown">
-                      <a href="http://rickrejeleene.me/writing/" class="dropdown-toggle extra" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">writing<span class="caret"></span></a>
-                      <ul class="dropdown-menu">
-                        <li><a class="extra" href="http://rickrejeleene.me/writing/travel/travel.html">Travel</a></li>
-                        <li><a class="extra" href="http://rickrejeleene.me/essays/index.html">Essays</a></li>
-                        <li><a class="extra" href="http://rickrejeleene.me/Problems-I'm-working/index.html">Current-Problems</a></li>
-                        <li><a class="extra" href="http://rickrejeleene.me/Software-Engineering/index.html">Software-Engineering</a></li>
-                        <li><a class="extra" href="http://rickrejeleene.me/writing/blog/blog.html">Blog</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div><!-- /.navbar-collapse -->
-              </div><!-- /.container-fluid -->
-            </nav>
-        </div><!-- /header -->
-            <div id="page" class="travel">
-                <h1 class="text-center">Travel Journal</h1>
-                
-                <div class="container">
-                    <!-- Introduction -->
-                    <div class="row mb-4">
-                        <div class="col-md-8 offset-md-2">
-                            <div class="intro text-center">
-                                <h2>Welcome to my Travel micro-blog</h2>
-                                <p class="lead">Keep it short and simple</p>
-                                <p>I write summaries of my impressions on places. I'm blessed with opportunities to travel and desire to share glimpses of my experiences with you.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Region Filter -->
-                    <div class="region-filter">
-                        <h4>Filter by Region:</h4>
-                        <button class="btn btn-outline-primary m-1" data-region="all">All</button>
-                        <button class="btn btn-outline-primary m-1" data-region="india">India</button>
-                        <button class="btn btn-outline-primary m-1" data-region="us">United States</button>
-                        <button class="btn btn-outline-primary m-1" data-region="middle-east">Middle East</button>
-                        <button class="btn btn-outline-primary m-1" data-region="asia">Asia</button>
-                        <button class="btn btn-outline-primary m-1" data-region="pacific">Pacific</button>
-                    </div>
-
-                    <!-- Travel Entries -->
-                    <div id="travel-entries">
-                        <!-- Entries will be loaded here by JavaScript -->
-                    </div>
-
-                    <!-- Pagination -->
-                    <div class="pagination-block">
-                        <!-- Pagination will be handled by JavaScript -->
-                    </div>
-                </div>
-            </div>
-
-          <div class="footer">
-            <div class="contact">
-              <p>
-                 Content and design by Rick Rejeleene <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Some rights reserved.</a>
-                 <br>
-                 Powered by <a href="http://github.com" target="_blank" title="Github:GitHub is how people build software">Github</a>
-                 <br>
-                 Contact the <a href="mailto:rickrejeleene@gmail.com" title="rickrejeleene@gmail.com"> webmaster</a>.
-              </p>
-            </div>
-            <div class="social">
-              <p>
-                  <a href="https://github.com/ludwigwittgenstein2"><img src="../../Website_files/github.png" width="50" height="50"></a>
-
-                 <a href="https://www.linkedin.com/in/rickrejeleene"><img src="../../Website_files/linkedin.png" width="50" height="50"></a>
-              </p>
-            </div>
-          </div>
-
-
-
+    </style>
+</head>
+<body>
+    <h1>Travel Blog</h1>
+    <p>Welcome to my Travel micro-blog. Keep it short and simple.</p>
+    <p>I write summaries of my impressions on places. I'm blessed with opportunities to travel. I desire to share glimpses of my travel experiences with you.</p>
+    
+    <div class="region-tabs" id="regionTabs">
+        <div class="region-tab active" data-region="all">All Regions</div>
+        <div class="region-tab" data-region="india">India</div>
+        <div class="region-tab" data-region="usa">United States</div>
+        <div class="region-tab" data-region="asia">Asia & Pacific</div>
+        <div class="region-tab" data-region="middleeast">Middle East</div>
+    </div>
+    
+    <div class="entries-control">
+        <div class="entries-per-page">
+            <label for="entriesPerPage">Entries per page:</label>
+            <select id="entriesPerPage">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+            </select>
         </div>
-       <!-- /container -->
-
-    <!-- JavaScript for pagination and filtering -->
+        
+        <div class="filter-control">
+            <label for="searchFilter">Search:</label>
+            <input type="text" id="searchFilter" placeholder="Type to search locations or keywords...">
+        </div>
+    </div>
+    
+    <div id="travelEntries">
+        <!-- Travel entries will be loaded here -->
+    </div>
+    
+    <div class="pagination" id="pagination">
+        <!-- Pagination will be generated here -->
+    </div>
+    
     <script>
-        const entriesPerPage = 10;
-        let currentPage = 1;
-        let currentRegion = 'all';
-
-        // Your travel entries data
+        // Sample travel entries from the original content
         const travelEntries = [
             {
                 date: "August 15, 2022",
                 location: "Los Angeles & Fullerton, California",
-                region: "us",
                 content: "I visited Fullerton, enjoyed the weather. Los Angeles is big, I stayed on outlier parts of California. California's Weather is appealing.",
-                image: null
+                imageUrl: null,
+                region: "usa"
             },
-            // Add all your entries here
+            {
+                date: "May 10, 2022",
+                location: "Doha, Qatar",
+                content: "Lovely Airport, Qatar is a dinosaur juice country. Many People look like me. I had enormous lamb & biriyani type food.",
+                imageUrl: null,
+                region: "middleeast"
+            },
+            {
+                date: "April 29, 2021",
+                location: "Tirunelveli, Tamil Nadu",
+                content: "My Hometown, things have changed, many new buildings. I keep wondering, 'How', 'Where are the jobs being created?' I loved Madhuram Restaurant as usual.",
+                imageUrl: null,
+                region: "india"
+            },
+            {
+                date: "October 30, 2021",
+                location: "Bay Area, California",
+                content: "Bay Area is beautiful. Expensive is the term, people use. Yes, Expensive. I visited new friends. We went for hikes. I do enjoy the weather in Bay Area. I love eating Indian food. I'm Tamil, so I stick with South-Indian food.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "August 7, 2021",
+                location: "Texarkana, Texas & Arkansas",
+                content: "A Border City between Arkansas & Texas. This is my first time in Chicago. I liked small-town feel.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "August 4, 2021",
+                location: "Chicago, U.S",
+                content: "Unlike visiting Popular places, I explored Book Stores. This is my Second time in Chicago. Barbara Book store is a landmark at Airport. I visited a friend, who works at Heirloom used bookstore.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "August 1, 2021",
+                location: "Madison, U.S.",
+                content: "I've appreciated Wisconsin during my last visit. This time, I visited a farm in Madison, U.S. Summer time is good season to visit. Lastly, I visited same hiking spot, which I visited few years ago.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "July 30, 2021",
+                location: "Kingston, Rhode Island",
+                content: "The quiet, peaceful town, my first impression of America. I discovered a new hiking spot in Kingston, Rhode Island.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "July 25, 2021",
+                location: "Orlando, Florida",
+                content: "Having been to Orlando many times, I was familiar with the Airport. This time, it was raining in Orlando. I visited a lake in a suburban community.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "June 4, 2020",
+                location: "Kingston, Rhode Island",
+                content: "2020, COVID year was overwhelming. I managed to visit Kingston, Rhode Island. Things haven't changed much in Rhode Island, U.S. Saunderstown is a good place to see Newport Bridge. I thought, In India, pace of change, development is overwhelming.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "June 6, 2020",
+                location: "Westerly, Rhode Island",
+                content: "A Lovely bookstore with a Coffee Shop is located downtown Westerly.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "January 1, 2019",
+                location: "Reston, Virginia",
+                content: "Reston Virginia has a lot of jobs and close to capital of America, D.C. Everyone is extremely busy and works diligently. It's too expensive to live close to D.C. I think New York City and D.C area might be on the same pace of life.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "March 30, 2019",
+                location: "Chennai, India",
+                content: "It's been a long time since I was in Chennai, India. I remember my undergrad days. I think I see more population, cars and traffic in Chennai. I visited Library and few Beaches. If you are from North America, the following things are going to strike to you: People are everywhere, Chaotic traffic, Depending on the area, you might see a lot of trash",
+                imageUrl: null,
+                region: "india"
+            },
+            {
+                date: "March 10, 2018",
+                location: "Omaha, Nebraska",
+                content: "What a surprise? I got a chance to visit Omaha, Nebraska. My friend showed me Warren Buffet's house. There were many cameras on the street. I perceived Nebraska and Iowa to be similar in terms of weather. For people outside the U.S, people are friendly in Nebraska and Iowa. I compare this to North-Eastern part of United States.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "March 10, 2018",
+                location: "Ames, Iowa",
+                content: "My plans to visit the beautiful state of Iowa came by random chance. I decided to take it. I was in Des Moines and Ames, Iowa. Plenty of corn-fields. Guess what? Iowa's economy is only 10% Agriculture. The Weather was similar to North-Eastern part of the United States. I liked the Mid-West due to smaller cities and not many people move to Mid-West. The Demographics are majority Anglo-Saxons.",
+                imageUrl: "../../img/travel/iowa.jpeg",
+                region: "usa"
+            },
+            {
+                date: "December 1, 2017",
+                location: "Orlando, Florida",
+                content: "Orlando, Florida has given me better weather compared to North-East. Bright-Sunny days in Orlando, Florida. My friends and I went for a walk in airport-lakes part. Guess what? I did see an alligator. Some of the things impressed on my memory were plenty of ponds, lakes. Palm trees and the city is spread out-wide. There are more people from Central and South America in Orlando, Florida. America has always been the land of immigrants. Kudos to you America.",
+                imageUrl: "../../img/travel/orlando.JPG",
+                region: "usa"
+            },
+            {
+                date: "September 11, 2017",
+                location: "Madison, Wisconsin",
+                content: "I was in Madison, Wisconsin. Plenty of farm land, corn, and sunflowers. I delighted seeing corn and sunflower farms. My friend and I took his dog for a walk. My favorite memory in Madison, Wisconsin is this trail. Glad that I visited during September. Winters are brutal; Unless you breath snow.",
+                imageUrl: "../../img/travel/madison.JPG",
+                region: "usa"
+            },
+            // New entries from the second document
+            {
+                date: "2015",
+                location: "Madurai, Tamil Nadu",
+                content: "Madurai is 150 kms from Tirunelveli. The City of Madurai's icon is Meenakshi Amman Temple, if you have not seen it. I'd say Dravidian Architecture is unique and has stone-cut temples. My peculiar memory of Madurai is crossing the Mattuthavani bus stand. Madurai is considered to be part of Southern Tamil Nadu, there's a divide in accent/slang between Northern Tamil Nadu and Southern Tamil Nadu.",
+                imageUrl: null,
+                region: "india"
+            },
+            {
+                date: "2003-2007",
+                location: "Trivandrum, Kerala",
+                content: "Trivandrum, I visited it from my early schooling days. It's similar to other Tamil Nadu towns, cities. The Weather is not as hot as Tirunelveli. It's around 80 degrees. People speak Malayalam in Kerala. If you have not noticed, people in India speak different language, depending on the state.",
+                imageUrl: null,
+                region: "india"
+            },
+            {
+                date: "2010-2011",
+                location: "Kottayam, Kerala",
+                content: "Kottayam is greener and I enjoyed my time visiting on a train. People speak Malayalam.",
+                imageUrl: null,
+                region: "india"
+            },
+            {
+                date: "May 2013",
+                location: "New Delhi, India",
+                content: "I was excited to be in New Delhi. As soon as I got from a train, I saw people from all over India. India has millions of communities with over 20 different languages. Majority are from northern parts of India are in Delhi. Remember, India is diverse as Europe. This makes India special. India was doomed to fail after the British had left. India is staying togther as a Nation. I noticed clean/good areas of New Delhi were near consulates. I must admit there were poorer parts in New Delhi. A lot of the signs in New Delhi were in Urdu. I think, it goes back to the Mughal Empire. I visited few bazaars in New Delhi. Infact, I was traveling alone. I couldn't get much feedback from locals. I wish -- I had stayed there for a while to learn about the people.",
+                imageUrl: null,
+                region: "india"
+            },
+            {
+                date: "June 2013",
+                location: "Gurgaon, Haryana",
+                content: "From New Delhi, there's trains to Gurgaon. I noticed that Northern India had rickshaws, and they called their three-wheeled transport vehicle as fat fatia. Probably in Southern India, I have not seen them, and people in Tamil Nadu called them as Autos.",
+                imageUrl: null,
+                region: "india"
+            },
+            {
+                date: "Unknown",
+                location: "Taj Mahal, Agra",
+                content: "What can I say about the Taj Mahal? Majestic architecture, grandeur, opulent, symbol of Mughal Empire. Taj Mahal is a must-visit in India. Infact, if you love history or architecture -- Then you'll fall in love with it.",
+                imageUrl: null,
+                region: "india"
+            },
+            {
+                date: "June 2010",
+                location: "Saudi Arabia",
+                content: "Middle East is extremely hot. People's clothing style suits the weather. I couldn't talk to the locals. It gets as hot as 122 degrees. I loved the Desert.",
+                imageUrl: null,
+                region: "middleeast"
+            },
+            {
+                date: "June 2016",
+                location: "Fiji",
+                content: "Fiji is a great place to visit. You would love the weather in summer. People are friendly. Fun fact, there are Indians in Fiji, who have assimilated to Fijian culture. Fijians would belong to Islander culture.",
+                imageUrl: null,
+                region: "asia"
+            },
+            {
+                date: "July 2012",
+                location: "Bangkok & Pattaya, Thailand",
+                content: "My visit to Thailand was not planned. Thai people are known for friendliness and hospitality. Many tourists visit Thailand. My first impression of Bangkok -- it's bigger than I had imagined. Bangkok had dozens of Buddhist temples. I don't think Thailand has winters. There's plenty of things to do in Thailand as a tourist from scuba diving, buddhist temples.",
+                imageUrl: null,
+                region: "asia"
+            },
+            {
+                date: "Unknown",
+                location: "Rockford, Illinois",
+                content: "The first thing you'll notice is Chicago's airport is big. The Parking lots go on forever. Illinois had bad roads. Winters are brutal in Illinois.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "Unknown",
+                location: "Madison, Wisconsin",
+                content: "Wisconsin had good roads and infrastructure.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "Unknown",
+                location: "University of Rhode Island",
+                content: "Blizzards are common in North-East. Rhode Island is near to Boston.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "Unknown",
+                location: "New York City",
+                content: "Most diverse city on Planet. There's plenty of things to do in NYC. People are from every country on the planet. NYC never sleeps. I was awake and could see lights. You can find all ethnic food. From from any country on the planet. I visited Randall's Park in NYC. I attended a friend's wedding in Central Park.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "Unknown",
+                location: "Orlando & Daytona, Florida",
+                content: "Florida –– to a northerner (U.S), the buildings look different. The Vegetation, plants, weather is tropical. Sunny weather, and lot of South American food.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "Unknown",
+                location: "Princeton, West Virginia",
+                content: "West Virginia is considered rural place, but I might say -- we can't have it all in a state. Either you have too many people, or less. West Virginia has winters, but they're not as a cold as North-East of America. The Airport (Charleston) is small, the city is considerbly small and peaceful. If you like small places, with less people, you might enjoy it unless, you can't stand rural places.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "Unknown",
+                location: "San Francisco, California",
+                content: "I've visited San Fransico. I must admit, perfect weather. Pretty much everyone knows about California.",
+                imageUrl: null,
+                region: "usa"
+            },
+            {
+                date: "Unknown",
+                location: "Texas",
+                content: "\"Everything is bigger in Texas\" - Texas has similar weather to Southern India. A lot of immigrants, the first thing, I noticed in Texas was the airport had Bush's name. Other than that, there's a lot of mexican cultural influence in Texas. Texas is huge, it takes a couple of days to drive around the state. They say, they have ranches as big as Rhode Island. When I was in Houston, Texas. I loved how it had lot of authentic Mexican restaurants.",
+                imageUrl: null,
+                region: "usa"
+            }
         ];
-
-        function displayEntries(page, region) {
-            const container = document.getElementById('travel-entries');
-            const filteredEntries = region === 'all' 
-                ? travelEntries 
-                : travelEntries.filter(entry => entry.region === region);
+        
+        // Variables for pagination and filtering
+        let currentPage = 1;
+        let entriesPerPage = 10;
+        let currentRegion = "all";
+        let searchQuery = "";
+        
+        // Function to filter entries based on region and search query
+        function filterEntries() {
+            return travelEntries.filter(entry => {
+                // Filter by region
+                const regionMatch = currentRegion === "all" || entry.region === currentRegion;
+                
+                // Filter by search query
+                const searchMatch = searchQuery === "" || 
+                    entry.location.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                    entry.content.toLowerCase().includes(searchQuery.toLowerCase());
+                
+                return regionMatch && searchMatch;
+            });
+        }
+        
+        // Function to display travel entries for the current page
+        function displayEntries() {
+            const filteredEntries = filterEntries();
+            const entriesContainer = document.getElementById('travelEntries');
+            entriesContainer.innerHTML = '';
             
-            const start = (page - 1) * entriesPerPage;
-            const end = start + entriesPerPage;
-            const entriesToShow = filteredEntries.slice(start, end);
-
-            container.innerHTML = entriesToShow.map(entry => `
-                <div class="travel-entry">
+            if (filteredEntries.length === 0) {
+                entriesContainer.innerHTML = '<div class="travel-entry"><p>No travel entries match your search criteria. Try a different search or filter.</p></div>';
+                return;
+            }
+            
+            const startIndex = (currentPage - 1) * entriesPerPage;
+            const endIndex = Math.min(startIndex + entriesPerPage, filteredEntries.length);
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                const entry = filteredEntries[i];
+                const entryElement = document.createElement('div');
+                entryElement.className = 'travel-entry';
+                
+                let entryHTML = `
                     <div class="travel-date">${entry.date}</div>
                     <div class="travel-location">${entry.location}</div>
-                    <div class="travel-content">${entry.content}</div>
-                    ${entry.image ? `<img src="${entry.image}" class="travel-image" alt="${entry.location}">` : ''}
-                </div>
-            `).join('');
-
-            updatePagination(Math.ceil(filteredEntries.length / entriesPerPage));
+                    <p>${entry.content}</p>
+                `;
+                
+                if (entry.imageUrl) {
+                    entryHTML += `<img src="${entry.imageUrl}" alt="${entry.location}" />`;
+                }
+                
+                entryElement.innerHTML = entryHTML;
+                entriesContainer.appendChild(entryElement);
+            }
         }
-
-        // Add event listeners and initialize the page
-        document.addEventListener('DOMContentLoaded', () => {
-            displayEntries(1, 'all');
+        
+        // Function to generate pagination
+        function generatePagination() {
+            const filteredEntries = filterEntries();
+            const totalPages = Math.ceil(filteredEntries.length / entriesPerPage);
+            const paginationContainer = document.getElementById('pagination');
+            paginationContainer.innerHTML = '';
             
-            // Add filter buttons listeners
-            document.querySelectorAll('.region-filter button').forEach(button => {
-                button.addEventListener('click', () => {
-                    currentRegion = button.dataset.region;
+            if (totalPages <= 1) {
+                return;
+            }
+            
+            // Previous button
+            const prevBtn = document.createElement('a');
+            prevBtn.href = '#';
+            prevBtn.className = `pagination-item ${currentPage === 1 ? 'disabled' : ''}`;
+            prevBtn.textContent = '«';
+            prevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePage();
+                }
+            });
+            paginationContainer.appendChild(prevBtn);
+            
+            // Page numbers
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            // First page
+            if (startPage > 1) {
+                const firstPageBtn = document.createElement('a');
+                firstPageBtn.href = '#';
+                firstPageBtn.className = 'pagination-item';
+                firstPageBtn.textContent = '1';
+                firstPageBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
                     currentPage = 1;
-                    displayEntries(currentPage, currentRegion);
+                    updatePage();
+                });
+                paginationContainer.appendChild(firstPageBtn);
+                
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'pagination-item disabled';
+                    ellipsis.textContent = '…';
+                    paginationContainer.appendChild(ellipsis);
+                }
+            }
+            
+            // Page buttons
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('a');
+                pageBtn.href = '#';
+                pageBtn.className = `pagination-item ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentPage = i;
+                    updatePage();
+                });
+                paginationContainer.appendChild(pageBtn);
+            }
+            
+            // Last page
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'pagination-item disabled';
+                    ellipsis.textContent = '…';
+                    paginationContainer.appendChild(ellipsis);
+                }
+                
+                const lastPageBtn = document.createElement('a');
+                lastPageBtn.href = '#';
+                lastPageBtn.className = 'pagination-item';
+                lastPageBtn.textContent = totalPages;
+                lastPageBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentPage = totalPages;
+                    updatePage();
+                });
+                paginationContainer.appendChild(lastPageBtn);
+            }
+            
+            // Next button
+            const nextBtn = document.createElement('a');
+            nextBtn.href = '#';
+            nextBtn.className = `pagination-item ${currentPage === totalPages ? 'disabled' : ''}`;
+            nextBtn.textContent = '»';
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updatePage();
+                }
+            });
+            paginationContainer.appendChild(nextBtn);
+        }
+        
+        // Function to update the page
+        function updatePage() {
+            displayEntries();
+            generatePagination();
+            window.scrollTo(0, 0);
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set up entries per page selector
+            const entriesSelector = document.getElementById('entriesPerPage');
+            entriesSelector.addEventListener('change', () => {
+                entriesPerPage = parseInt(entriesSelector.value);
+                currentPage = 1;
+                updatePage();
+            });
+            
+            // Set up search filter
+            const searchFilter = document.getElementById('searchFilter');
+            searchFilter.addEventListener('input', () => {
+                searchQuery = searchFilter.value;
+                currentPage = 1;
+                updatePage();
+            });
+            
+            // Set up region tabs
+            const regionTabs = document.querySelectorAll('.region-tab');
+            regionTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs
+                    regionTabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    // Update current region
+                    currentRegion = tab.dataset.region;
+                    currentPage = 1;
+                    updatePage();
                 });
             });
+            
+            // Initial display
+            updatePage();
         });
     </script>
+</body>
+</html>
