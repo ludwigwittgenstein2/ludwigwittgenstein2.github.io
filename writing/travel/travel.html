@@ -7,30 +7,19 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Original theme colors and styles */
         body {
             font-family: 'Source Sans Pro', sans-serif;
             color: #333;
             background-color: #fff;
+            margin: 0;
+            padding: 20px;
         }
 
-        #header {
-            border-bottom: 1px solid #e8e8e8;
-            margin-bottom: 2em;
-            padding: 1em 0;
+        #container {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .extra {
-            color: #666;
-            text-decoration: none;
-            margin-right: 1.5em;
-        }
-
-        .extra:hover {
-            color: #000;
-        }
-
-        /* Travel-specific styles that match your theme */
         .travel-entry {
             margin-bottom: 2em;
             padding-bottom: 1em;
@@ -56,10 +45,11 @@
             color: #fff;
         }
 
-        /* Pagination styling to match your theme */
         .pagination {
             text-align: center;
             margin: 2em 0;
+            list-style: none;
+            padding: 0;
         }
 
         .pagination button {
@@ -78,82 +68,34 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="#">Rick Rejeleene</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Poetry</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Resume</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle active" href="#" id="writingDropdown" role="button" data-bs-toggle="dropdown">
-                            Writing
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item active" href="#">Travel Journal</a></li>
-                            <li><a class="dropdown-item" href="#">Reading</a></li>
-                            <li><a class="dropdown-item" href="#">Research</a></li>
-                            <li><a class="dropdown-item" href="#">Essays</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <main class="container my-5">
-        <div id="header">
-            <nav>
-                <a class="extra" href="/">Home</a>
-                <a class="extra" href="/poetry">Poetry</a>
-                <a class="extra" href="/resume">Resume</a>
-                <a class="extra" href="/writing">Writing</a>
-            </nav>
+    <div id="container">
+        <h1>Travel Journal</h1>
+        
+        <!-- Region filters -->
+        <div class="filters">
+            <div class="region-tab active" data-region="all">All</div>
+            <div class="region-tab" data-region="india">India</div>
+            <div class="region-tab" data-region="usa">USA</div>
+            <div class="region-tab" data-region="asia">Asia & Pacific</div>
+            <div class="region-tab" data-region="middleeast">Middle East</div>
         </div>
 
-        <header class="mb-5">
-            <h1 class="display-4 mb-3">Travel Journal</h1>
-            <p class="lead">Chronicling my journeys around the world</p>
-        </header>
-
-        <!-- Controls -->
-        <div class="filter-controls mb-4">
-            <div class="d-flex flex-wrap gap-2 mb-3">
-                <div class="region-tab active" data-region="all">All</div>
-                <div class="region-tab" data-region="india">India</div>
-                <div class="region-tab" data-region="usa">USA</div>
-                <div class="region-tab" data-region="asia">Asia & Pacific</div>
-                <div class="region-tab" data-region="middleeast">Middle East</div>
-            </div>
-            
-            <div class="d-flex gap-3 flex-wrap">
-                <div class="d-flex align-items-center gap-2">
-                    <label>Show:</label>
-                    <select class="form-select" id="entriesPerPage" style="width: 100px">
-                        <option value="5">5</option>
-                        <option value="10" selected>10</option>
-                        <option value="20">20</option>
-                    </select>
-                </div>
-                <div class="flex-grow-1">
-                    <input type="search" class="form-control" id="searchFilter" placeholder="Search locations or keywords...">
-                </div>
-            </div>
+        <!-- Search and entries per page -->
+        <div style="margin: 20px 0;">
+            <input type="search" id="searchFilter" placeholder="Search locations..." style="padding: 5px;">
+            <select id="entriesPerPage">
+                <option value="5">5 per page</option>
+                <option value="10" selected>10 per page</option>
+                <option value="20">20 per page</option>
+            </select>
         </div>
 
-        <!-- Entries Container -->
+        <!-- Entries will be rendered here -->
         <div id="travelEntries"></div>
 
         <!-- Pagination -->
-        <nav class="d-flex justify-content-center mt-5">
-            <div class="pagination" id="pagination"></div>
-        </nav>
-    </main>
+        <div id="pagination"></div>
+    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -477,6 +419,7 @@
 
         function renderEntries() {
             try {
+                console.log('Rendering entries...'); // Debug log
                 const filtered = travelEntries.filter(entry => {
                     const matchesRegion = activeRegion === 'all' || entry.region === activeRegion;
                     const matchesSearch = entry.location.toLowerCase().includes(searchTerm) ||
@@ -484,17 +427,19 @@
                     return matchesRegion && matchesSearch;
                 });
 
+                console.log('Filtered entries:', filtered.length); // Debug log
+
                 const start = (currentPage - 1) * entriesPerPage;
                 const paginated = filtered.slice(start, start + entriesPerPage);
 
+                console.log('Paginated entries:', paginated.length); // Debug log
+
                 const entriesHTML = paginated.map(entry => `
                     <article class="travel-entry">
-                        <header>
-                            <div class="travel-date">${entry.date}</div>
-                            <h2 class="h4">${entry.location}</h2>
-                        </header>
+                        <div class="travel-date">${entry.date}</div>
+                        <h2>${entry.location}</h2>
                         <p>${entry.content}</p>
-                        ${entry.imageUrl || entry.image ? `<img src="${entry.imageUrl || entry.image}" class="entry-image" alt="${entry.location}">` : ''}
+                        ${entry.imageUrl ? `<img src="${entry.imageUrl}" alt="${entry.location}">` : ''}
                     </article>
                 `).join('');
 
@@ -502,7 +447,8 @@
                 renderPagination(filtered.length);
             } catch (error) {
                 console.error('Error rendering entries:', error);
-                document.getElementById('travelEntries').innerHTML = '<div class="alert alert-danger">Error loading entries. Please try again.</div>';
+                document.getElementById('travelEntries').innerHTML = 
+                    '<div style="color: red;">Error loading entries. Please check the console.</div>';
             }
         }
 
@@ -538,7 +484,10 @@
 
         // Event Listeners
         document.addEventListener('DOMContentLoaded', () => {
-            // Region filter
+            console.log('DOM loaded'); // Debug log
+            renderEntries(); // Initial render
+            
+            // Add event listeners
             document.querySelectorAll('.region-tab').forEach(filter => {
                 filter.addEventListener('click', () => {
                     document.querySelectorAll('.region-tab').forEach(f => f.classList.remove('active'));
@@ -549,22 +498,17 @@
                 });
             });
 
-            // Search filter
             document.getElementById('searchFilter').addEventListener('input', (e) => {
                 searchTerm = e.target.value.toLowerCase();
                 currentPage = 1;
                 renderEntries();
             });
 
-            // Entries per page
             document.getElementById('entriesPerPage').addEventListener('change', (e) => {
                 entriesPerPage = parseInt(e.target.value);
                 currentPage = 1;
                 renderEntries();
             });
-
-            // Initial render
-            renderEntries();
         });
     </script>
 </body>
