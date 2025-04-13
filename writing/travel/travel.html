@@ -483,19 +483,25 @@
         function renderEntries() {
             try {
                 console.log('Rendering entries...'); // Debug log
-                const filtered = travelEntries.filter(entry => {
+                
+                // First sort all entries by date in descending order (newest first)
+                const sortedEntries = travelEntries.sort((a, b) => {
+                    // Convert dates to timestamps for comparison
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                    return dateB - dateA; // Descending order (newest first)
+                });
+
+                // Then filter the sorted entries
+                const filtered = sortedEntries.filter(entry => {
                     const matchesRegion = activeRegion === 'all' || entry.region === activeRegion;
                     const matchesSearch = entry.location.toLowerCase().includes(searchTerm) ||
                                         entry.content.toLowerCase().includes(searchTerm);
                     return matchesRegion && matchesSearch;
                 });
 
-                console.log('Filtered entries:', filtered.length); // Debug log
-
                 const start = (currentPage - 1) * entriesPerPage;
                 const paginated = filtered.slice(start, start + entriesPerPage);
-
-                console.log('Paginated entries:', paginated.length); // Debug log
 
                 const entriesHTML = paginated.map(entry => `
                     <article class="travel-entry">
