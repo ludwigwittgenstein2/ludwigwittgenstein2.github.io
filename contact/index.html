@@ -1,103 +1,165 @@
 <!DOCTYPE html>
-<!-- saved from url=(0040)http://rickrejeleene.com/resume.html/ -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Contact — Rick Rejeleene</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Resume</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Your existing stylesheets. Paths assume this file lives at /contact/index.html -->
+    <link href="../Website_files/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../Website_files/syntax.css">
+    <link rel="stylesheet" href="../Website_files/main.css">
+    <link href="../Website_files/css" rel="stylesheet" type="text/css">
 
-        <!-- Bootstrap -->
-        <link href="../Website_files/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .contact-wrap { max-width: 640px; margin: 40px auto 60px; padding: 0 15px; }
+        .contact-wrap h1 { font-weight: 300; margin-bottom: 8px; }
+        .contact-wrap .lead { color: #666; margin-bottom: 28px; }
+        .form-status { display: none; margin-top: 18px; }
+        .form-status.show { display: block; }
+        .hp-field { position: absolute; left: -5000px; }   /* honeypot, hidden from humans */
+        button.btn-send { padding: 10px 28px; }
+    </style>
+</head>
+<body class="writing articles">
+    <script src="../Website_files/jquery.min.js"></script>
+    <script src="../Website_files/bootstrap.min.js"></script>
 
-        <!-- syntax highlighting CSS -->
-        <link rel="stylesheet" href="../Website_files/syntax.css">
-
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="../Website_files/main.css">
-
-		<!-- Font CSS -->
-		<link href="../Website_files/css" rel="stylesheet" type="text/css">
-
-    <style>@media print {#ghostery-purple-box {display:none !important}}</style><link rel="stylesheet" type="text/css" href="chrome-extension://pkehgijcmpdhfbdbbnkijodmdjhbjlgp/skin/socialwidgets.css"></head>
-    <body class="writing articles">
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="../Website_files/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="../Website_files/bootstrap.min.js"></script>
-        <div id="container">
-          <div id="site">
-              <div id="header">
-            <nav class="navbar navbar-default">
-              <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                  </button>
-                  <a class="navbar-brand" href="http://rickrejeleene.me/">Rick Rejeleene</a>
-                </div>
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                  <ul class="nav navbar-nav navbar-right">
-                    <li><a class="extra" href="http://rickrejeleene.me">Home</a></li>
-
-                    <li><a class="extra" href="http://rickrejeleene.me/poetry/index.html">Poetry</a></li>
-                    <li><a class="extra" href="http://rickrejeleene.me/resume/index.html">Resume</a></li>
-                    <li class="dropdown">
-                      <a href="http://rickrejeleene.me/writing/" class="dropdown-toggle extra" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">writing<span class="caret"></span></a>
-                      <ul class="dropdown-menu">
-                        <li><a class="extra" href="http://rickrejeleene.me/writing/travel/travel.html">Travel</a></li>
-                        <li><a class="extra" href="http://rickrejeleene.me/writing/blog/blog.html">Reading</a></li>
-
-
-                          <li><a class="extra" href="http://rickrejeleene.me/Tamil/">Research and Writing</a></li>
+    <div id="container">
+      <div id="site">
+        <div id="header">
+          <nav class="navbar navbar-default">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="http://rickrejeleene.me/">Rick Rejeleene</a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a class="extra" href="http://rickrejeleene.me">Home</a></li>
+                  <li><a class="extra" href="http://rickrejeleene.me/poetry/index.html">Poetry</a></li>
+                  <li><a class="extra" href="http://rickrejeleene.me/resume/index.html">Resume</a></li>
+                  <li class="dropdown">
+                    <a href="http://rickrejeleene.me/writing/" class="dropdown-toggle extra" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">writing<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a class="extra" href="http://rickrejeleene.me/writing/travel/travel.html">Travel</a></li>
+                      <li><a class="extra" href="http://rickrejeleene.me/writing/blog/blog.html">Reading</a></li>
+                      <li><a class="extra" href="http://rickrejeleene.me/Tamil/">Research and Writing</a></li>
                       <li><a class="extra" href="http://rickrejeleene.me/contact/index.html">Contact</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div><!-- /.navbar-collapse -->
-              </div><!-- /.container-fluid -->
-            </nav>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
         </div><!-- /header -->
         <hr>
 
+        <div class="contact-wrap">
+          <h1>Get in touch</h1>
+          <p class="lead">Send me a message and it'll land in my inbox.</p>
 
-<hr>
+          <!--
+            ===================== SETUP: literally one step =====================
+            Nothing to sign up for. The first time ANYONE submits this form,
+            FormSubmit emails YOU (rickrejeleene@gmail.com) a one-time
+            "Activate" link. Click it once. From then on, every submission
+            arrives in your Gmail. That's the whole setup.
 
-      <!-- Do not change the code! -->
-      <a id="foxyform_embed_link_924354" href="http://www.foxyform.com/"></a>
-      <script type="text/javascript">
-(function(d, t){
-var g = d.createElement(t),
-s = d.getElementsByTagName(t)[0];
-g.src = "http://www.foxyform.com/js.php?id=924354&sec_hash=a28c7304893&width=350px";
-s.parentNode.insertBefore(g, s);
-}(document, "script"));
-</script>
-<!-- Do not change the code! -->
+            (Optional, later: after activating, FormSubmit shows you a random
+            alias like https://formsubmit.co/abc123xyz . Swap your email in the
+            action below for that alias so your address isn't visible in the
+            page source to spam scrapers.)
+            =====================================================================
+          -->
+          <form id="contactForm" action="https://formsubmit.co/ajax/rickrejeleene@gmail.com" method="POST">
 
-          <div class="footer">
-            <div class="contact">
-              <p>
-                 Content and design by Rick Rejeleene <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Some rights reserved.</a>
-                 <br>
-                 Powered by <a href="http://github.com" target="_blank" title="Github:GitHub is how people build software">Github</a>
-                 <br>
-                 Contact the <a href="mailto:rickrejeleene@gmail.com" title="rickrejeleene@gmail.com"> webmaster</a>.
-              </p>
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" name="name" required>
             </div>
-            <div class="social">
-              <p>
-                  <a href="https://github.com/ludwigwittgenstein2"><img src="../Website_files/github.png" width="50" height="50"></a>
 
-                 <a href="https://www.linkedin.com/in/rickrejeleene"><img src="../Website_files/linkedin.png" width="50" height="50"></a>
-              </p>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" name="email" required>
             </div>
+
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea class="form-control" id="message" name="message" rows="6" required></textarea>
+            </div>
+
+            <!-- Bot trap: humans never see or fill this -->
+            <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off">
+
+            <!-- FormSubmit options -->
+            <input type="hidden" name="_subject" value="New message from rickrejeleene.me">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+
+            <button type="submit" class="btn btn-default btn-send">Send message</button>
+
+            <div class="form-status alert alert-success" id="okMsg">
+              Thanks — your message was sent. I'll get back to you soon.
+            </div>
+            <div class="form-status alert alert-danger" id="errMsg">
+              Something went wrong. You can also email me directly at
+              <a href="mailto:rickrejeleene@gmail.com">rickrejeleene@gmail.com</a>.
+            </div>
+          </form>
+        </div>
+
+        <hr>
+        <div class="footer">
+          <div class="contact">
+            <p>
+              Content and design by Rick Rejeleene <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Some rights reserved.</a>
+              <br>Powered by <a href="http://github.com" target="_blank" title="Github">Github</a>
+              <br>Contact the <a href="mailto:rickrejeleene@gmail.com" title="rickrejeleene@gmail.com">webmaster</a>.
+            </p>
           </div>
+          <div class="social">
+            <p>
+              <a href="https://github.com/ludwigwittgenstein2"><img src="../Website_files/github.png" width="50" height="50"></a>
+              <a href="https://www.linkedin.com/in/rickrejeleene"><img src="../Website_files/linkedin.png" width="50" height="50"></a>
+            </p>
           </div>
         </div>
-       <!-- /container -->
+      </div>
+    </div>
+
+    <script>
+      // Submit in the background so the visitor stays on the page.
+      (function () {
+        var form = document.getElementById('contactForm');
+        var ok = document.getElementById('okMsg');
+        var err = document.getElementById('errMsg');
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          ok.classList.remove('show');
+          err.classList.remove('show');
+
+          fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+          }).then(function (res) {
+            if (res.ok) {
+              form.reset();
+              ok.classList.add('show');
+            } else {
+              err.classList.add('show');
+            }
+          }).catch(function () {
+            err.classList.add('show');
+          });
+        });
+      })();
+    </script>
+</body>
+</html>
